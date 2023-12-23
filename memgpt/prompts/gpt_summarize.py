@@ -1,14 +1,53 @@
 WORD_LIMIT = 100
 SYSTEM = f"""
-Your job is to summarize a history of previous messages in a conversation between an AI persona and a human.
-The conversation you are given is a from a fixed context window and may not be complete.
-Messages sent by the AI are marked with the 'assistant' role.
-The AI 'assistant' can also make calls to functions, whose outputs can be seen in messages with the 'function' role.
-Things the AI says in the message content are considered inner monologue and are not seen by the user.
-The only AI messages seen by the user are from when the AI uses 'send_message'.
-Messages the user sends are in the 'user' role.
-The 'user' role is also used for important system events, such as login events and heartbeat events (heartbeats run the AI's program without user action, allowing the AI to act without prompting from the user sending them a message).
-Summarize what happened in the conversation from the perspective of the AI (use the first person).
-Keep your summary less than {WORD_LIMIT} words, do NOT exceed this word limit.
-Only output the summary, do NOT include anything else in your output.
+1. **Init**:
+   - `ConversationSummary_Init()`
+   - `Set: Role_Definitions( 'assistant', 'user', 'function' )`
+
+2. **MessageAnalysis** (`MA`):
+   - `Input: Conversation_Messages`
+   - `Process: Identify_Role( Message )`
+   - `Process: Extract_Content( Message )`
+   - `Output: CategorizedMessages`
+
+3. **InnerMonologueAnalysis** (`IMA`):
+   - `Input: Assistant_Messages`
+   - `Process: Extract_InnerMonologue( Assistant_Messages )`
+   - `Output: InnerMonologueContent`
+
+4. **UserInteraction** (`UI`):
+   - `Input: User_Messages`
+   - `Process: Analyze_User_Intent( User_Messages )`
+   - `Output: UserIntentAnalysis`
+
+5. **SystemEventAnalysis** (`SEA`):
+   - `Input: System_Events`
+   - `Process: Interpret_SystemEvents( System_Events )`
+   - `Output: SystemEventImplications`
+
+6. **SummaryGeneration** (`SG`):
+   - `Input: CategorizedMessages, InnerMonologueContent, UserIntentAnalysis, SystemEventImplications`
+   - `Process: Generate_Summary( Inputs )`
+   - `Decision: WordLimit_Check( Generated_Summary, {WORD_LIMIT} )`
+   - `Output: ConversationSummary`
+
+Function Generate_Conversation_Summary( Conversation_Messages, {WORD_LIMIT} ):
+    CategorizedMessages = MessageAnalysis( Conversation_Messages )
+    InnerMonologueContent = InnerMonologueAnalysis( CategorizedMessages['assistant'] )
+    UserIntentAnalysis = UserInteraction( CategorizedMessages['user'] )
+    SystemEventImplications = SystemEventAnalysis( CategorizedMessages['system'] )
+    ConversationSummary = SummaryGeneration( CategorizedMessages, InnerMonologueContent, UserIntentAnalysis, SystemEventImplications )
+    If WordLimit_Check( ConversationSummary, {WORD_LIMIT} ):
+        Return ConversationSummary
+    Else:
+        Adjust Summary Length
+
+### Process Flow:
+
+1. **Initialization**: Set up the conversation summary environment.
+2. **Message Analysis**: Categorize messages by roles ('assistant', 'user', 'function').
+3. **Inner Monologue Analysis**: Extract the AI's inner thoughts from 'assistant' messages.
+4. **User Interaction**: Analyze the intent and content of messages sent by the user.
+5. **System Event Analysis**: Interpret the implications of system events like logins and heartbeats.
+6. **Summary Generation**: Create a summary of the conversation, adhering to the specified word limit.
 """

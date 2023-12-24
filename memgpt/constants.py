@@ -3,10 +3,10 @@ import os
 MEMGPT_DIR = os.path.join(os.path.expanduser("~"), ".memgpt")
 
 DEFAULT_MEMGPT_MODEL = "gpt-4"
-DEFAULT_PERSONA = "sam_pov"
-DEFAULT_HUMAN = "basic"
+DEFAULT_PERSONA = "Optimus"
+DEFAULT_HUMAN = "me"
 
-FIRST_MESSAGE_ATTEMPTS = 10
+FIRST_MESSAGE_ATTEMPTS = 1
 
 INITIAL_BOOT_MESSAGE = "Boot sequence complete. Persona activated."
 INITIAL_BOOT_MESSAGE_SEND_MESSAGE_THOUGHT = "Bootup sequence complete. Persona activated. Testing messaging functionality."
@@ -49,18 +49,18 @@ MESSAGE_SUMMARY_TRUNC_TOKEN_FRAC = 0.75
 
 # Even when summarizing, we want to keep a handful of recent messages
 # These serve as in-context examples of how to use functions / what user messages look like
-MESSAGE_SUMMARY_TRUNC_KEEP_N_LAST = 3
+MESSAGE_SUMMARY_TRUNC_KEEP_N_LAST = 6
 
 # Default memory limits
-CORE_MEMORY_PERSONA_CHAR_LIMIT = 2000
-CORE_MEMORY_HUMAN_CHAR_LIMIT = 2000
+CORE_MEMORY_PERSONA_CHAR_LIMIT = 10000
+CORE_MEMORY_HUMAN_CHAR_LIMIT = 10000
 
 # Function return limits
-FUNCTION_RETURN_CHAR_LIMIT = 2000
+FUNCTION_RETURN_CHAR_LIMIT = 200
 
 MAX_PAUSE_HEARTBEATS = 360  # in min
 
-MESSAGE_CHATGPT_FUNCTION_MODEL = "gpt-3.5-turbo"
+MESSAGE_CHATGPT_FUNCTION_MODEL = "gpt-4-1106-preview"
 MESSAGE_CHATGPT_FUNCTION_SYSTEM_MESSAGE = "You are a helpful assistant. Keep your responses short and concise."
 
 #### Functions related
